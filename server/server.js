@@ -36,7 +36,6 @@ app.get('/todos', (req, res)=>{
 
 app.get('/todos/:id', (req, res)=>{
 	var id = req.params.id
-	console.log(id)
 	// validate ID -- if invalide, respond w 404 and send back empty body
 	if (!ObjectID.isValid(id)){
 		res.status(404).send()
@@ -48,11 +47,29 @@ app.get('/todos/:id', (req, res)=>{
 		}
 		res.send({todo})
 	}).catch((e)=>{
-		res.status(404).send()
+		res.status(400).send()
 	})
 
 }, (err)=>{
 	res.status(400).send()
+})
+
+app.delete('/todos/:id', (req, res)=>{
+	var id = req.params.id
+
+	if (!ObjectID.isValid(id)){
+		return res.status(404).send()
+	}
+
+	// remove todo by id
+	Todo.findByIdAndRemove(id).then((todo)=>{
+		if(!todo){
+			return res.status(404).send()
+		}
+		res.send({todo})
+	}).catch((e)=>{
+		res.status(400).send()
+	})
 })
 
 
