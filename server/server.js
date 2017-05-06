@@ -74,6 +74,9 @@ app.delete('/todos/:id', (req, res)=>{
 	})
 })
 
+// setup patch route, takes two arguments: 
+// 1st is url
+// 2nd is callback with request and response params
 app.patch('/todos/:id', (req, res)=>{
 	var id = req.params.id
 	// hard params
@@ -81,14 +84,14 @@ app.patch('/todos/:id', (req, res)=>{
 	if (!ObjectID.isValid(id)){
 		return res.status(404).send()
 	}
-
+	// if completed and is boolean then set completed at
 	if (_.isBoolean(body.completed) && body.completed){
 		body.completedAt = new Date().getTime();
 	} else {
 		body.completed = false;
 		body.completedAt = null;
 	}
-
+// find todo by id and update
 	Todo.findByIdAndUpdate(id, {$set:body}, {new: true}).then((todo)=>{
 		if(!todo){
 			return res.status(404).send();
@@ -116,7 +119,7 @@ app.post('/users', (req, res)=>{
 
 
 
-
+// authenticate middleware
 app.get('/users/me', authenticate,(req, res)=>{
 	res.send(req.user)
 })
