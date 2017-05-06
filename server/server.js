@@ -107,7 +107,7 @@ app.patch('/todos/:id', (req, res)=>{
 app.post('/users', (req, res)=>{
 	var body = _.pick(req.body, ['email', 'password'])
 	var user = new User(body)
-
+// mongoose middleware to hash password before you save see users model
 	user.save().then(()=>{
 		return user.generateAuthToken();
 	}).then((token)=>{
@@ -119,7 +119,7 @@ app.post('/users', (req, res)=>{
 
 
 
-// authenticate middleware
+// authenticate middleware see folder ./middleware/authenticate
 app.get('/users/me', authenticate,(req, res)=>{
 	res.send(req.user)
 })
