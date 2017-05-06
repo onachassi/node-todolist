@@ -56,6 +56,7 @@ app.get('/todos/:id', (req, res)=>{
 	res.status(400).send()
 })
 
+// delete path
 app.delete('/todos/:id', (req, res)=>{
 	var id = req.params.id
 
