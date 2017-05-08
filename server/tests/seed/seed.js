@@ -22,18 +22,24 @@ const users = [{
   password: 'seed2password'
 }]
 
-const populateUsers = (done) => {
-	User.remove({}).then(()=>{
+const populateUsers = () => {
+	return User.remove({}, ()=>{
 		var userOne = new User(users[0]).save();	
 		var userTwo = new User(users[1]).save();
-	
-
-		return Promise.all([userOne, userTwo])
-		}, (err) => {
-			console.log(err)
-		})
+	})	
 }
 
+// const populateUsers = (done) => {
+// 	User.remove({}).then(()=>{
+// 		var userOne = new User(users[0]).save();	
+// 		var userTwo = new User(users[1]).save();
+	
+
+// 		return Promise.all([userOne, userTwo])
+// 		}, (err) => {
+// 			console.log(err)
+// 		})
+// }
 
 
 const todos = [{
@@ -46,20 +52,21 @@ const todos = [{
 	completedAt: 333
 }]
 
-const populateTodos = (done) => {
+const populateTodos = () => {
 	Todo.remove({})
-	  .then((done)=>{
-		 Todo.insertMany(todos)
-		 return done()
-	  })
-	  .catch((err)=>{
-	  	console.log(err)
-	  })
+  return Todo.insertMany(todos)
 }
 
-populateTodos()
+populateTodos().then((todos)=>{
+	console.log(JSON.stringify(todos, undefined, 2))
+	
+}).catch((err)=>{
+	console.log(err)
+})
 
-// populateUsers()
+// populateUsers().then((users)=>{
+// 	console.log(JSON.stringify(users))
+// })
 
 
-module.exports = {todos, populateTodos, users, populateUsers}
+// module.exports = {todos, populateTodos, users, populateUsers}
